@@ -1,0 +1,39 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-dungeon-dark text-white font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'MedievalSharp', cursive;
+  }
+}
+
+
+
+@layer utilities {
+  .fade-out-obstacle {
+    animation: fadeOutRotate 1s ease-out forwards;
+  }
+}
+
+@keyframes fadeOutRotate {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.2) rotate(10deg);
+  }
+}
