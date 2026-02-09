@@ -1,75 +1,149 @@
-# 🧙‍♂️ PyDungeon: Aprende Python Jugando
+# 🧙‍♂️ PyDungeon: WebAssembly Game Engine
 
-Una aventura interactiva donde **la magia es el código**. PyDungeon enseña lógica de programación a niños y principiantes mediante una experiencia RPG inmersiva que se ejecuta 100% en el navegador.
+![PyDungeon Gameplay](assets/demo-gameplay.png)
 
----
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-WASM-purple)
+![Pyodide](https://img.shields.io/badge/Python-Pyodide-yellow?logo=python)
+![Vite](https://img.shields.io/badge/Vite-Build_Tool-646CFF?logo=vite)
 
-## ✨ Características Principales
+------------------------------------------------------------------------
 
-PyDungeon no es solo un editor de texto; es un **entorno de simulación completo** donde cada línea de código tiene un impacto visual inmediato.
+## 🎮 Overview
 
-### 🗺️ Niveles Progresivos & Gameplay
-Desde movimientos básicos hasta bucles `for`, condicionales `if/else` y lógica de física. Cada nivel introduce un concepto nuevo de forma orgánica, sin muros de texto teóricos.
+**PyDungeon** es una plataforma educativa interactiva que ejecuta un
+intérprete completo de Python directamente en el navegador mediante
+WebAssembly.
 
-### 📖 El Grimorio (Sistema de Ayuda)
-Un compendio interactivo de comandos. Diseñado pedagógicamente para enseñar sintaxis correcta, indentación y el uso de funciones sin abrumar al estudiante.
+Gamifica el aprendizaje de lógica de programación a través de un RPG de
+exploración.\
+A diferencia de validadores tradicionales, no requiere backend para
+ejecutar código: todo ocurre en el cliente de forma segura y reactiva.
 
-### 🛠️ Dev Mode & Motor de Física
-Para los curiosos y educadores. El juego incluye un modo de depuración visual y un motor de física personalizado que permite resolver puzzles de gravedad mediante código real.
+------------------------------------------------------------------------
 
----
+## 🏗️ Arquitectura y Desafíos Técnicos
 
-## 🚀 Tecnología "Bajo el Capó"
+### 1️⃣ Ejecución de Código en el Cliente (Serverless Python)
 
-Lo que hace especial a este proyecto es que **no requiere backend para ejecutar Python**. Todo sucede en el cliente.
+Integración de **Pyodide (CPython compilado a WebAssembly)** para
+ejecutar Python real dentro del navegador.
 
-- **Pyodide (WebAssembly)**: Ejecutamos un intérprete de Python completo dentro del navegador. Esto garantiza seguridad (sandbox) y velocidad instantánea, permitiendo importar librerías estándar si fuera necesario.
+**Desafío técnico:**
 
-- **React + Zustand**: Gestión de estado global optimizada para sincronizar la ejecución asíncrona del código Python con las animaciones del Grid y el Canvas a 60 FPS.
+-   Evitar bloquear el Main Thread con loops infinitos o cálculos
+    pesados.
 
-- **CodeMirror 6**: Editor de código profesional con resaltado de sintaxis Python y autocompletado básico.
+**Solución implementada:**
 
-- **Diseño Sonoro**: Sistema de audio inmersivo (BGM y SFX) implementado con `use-sound` para feedback táctil y auditivo.
+-   Control de flujo asíncrono.
+-   Sandboxing.
+-   Gestión segura de ejecución.
 
----
+------------------------------------------------------------------------
 
-## 🎮 Instalación y Uso Local
+### 2️⃣ Game Loop Reactivo de Alto Rendimiento
 
-¿Quieres probarlo, modificar los niveles o contribuir? Sigue estos pasos para correrlo en tu máquina:
+El motor NO utiliza Canvas tradicional.
 
-```bash
-# 1. Clona el repositorio
-git clone https://github.com/TU_USUARIO/PyDungeon.git
+Se basa en una grilla reactiva optimizada.
 
-# 2. Entra al directorio
+Optimizaciones:
+
+-   Zustand para estado atómico.
+-   Batch updates.
+-   Minimización de re-renderizados.
+-   Simulación fluida cercana a 60 FPS.
+
+------------------------------------------------------------------------
+
+### 3️⃣ Sistema de Archivos Virtual (VFS)
+
+Editor basado en CodeMirror 6 que simula un entorno real.
+
+API dinámica inyectada:
+
+``` python
+hero.move()
+hero.attack()
+```
+
+------------------------------------------------------------------------
+
+## ✨ Características del Proyecto
+
+### ⚔️ Gameplay & Progresión Lógica
+
+![Gameplay Demo](assets/demo-gameplay.png)
+
+-   Variables
+-   Condicionales
+-   Bucles
+-   Algoritmos básicos
+-   Pensamiento computacional aplicado
+
+------------------------------------------------------------------------
+
+### 📜 El Grimorio (Scaffolding Educativo)
+
+![Grimorio Feature](assets/feature-grimorio.png)
+
+Sistema interactivo que guía sin revelar soluciones completas.
+
+------------------------------------------------------------------------
+
+### 🛠️ Developer Mode & Debugging
+
+![Developer Mode](assets/feature-devmode.png)
+
+Herramientas avanzadas:
+
+-   Visualización de colisiones
+-   Coordenadas en tiempo real
+-   Estados internos del motor
+
+------------------------------------------------------------------------
+
+## 🚀 Instalación Local
+
+Proyecto basado en **Vite**.
+
+``` bash
+# 1. Clonar repositorio
+git clone https://github.com/TiagoFrencia/PyDungeon.git
+
+# 2. Instalar dependencias
 cd PyDungeon
-
-# 3. Instala las dependencias
 npm install
 
-# 4. Inicia el servidor de desarrollo
+# 3. Ejecutar entorno dev
 npm run dev
 ```
 
-Abre tu navegador en `http://localhost:5173` y ¡empieza a lanzar hechizos!
+------------------------------------------------------------------------
 
----
+## 📂 Estructura del Código
 
-## 📚 Estructura del Proyecto
+    src/hooks/usePyodide.ts        → Core del engine WASM + Python
+    src/store/useGameStore.ts      → Estado global y sincronización UI
+    src/components/MagicCanvas.tsx → Renderizado reactivo optimizado
 
-```
-src/
-├── components/   # UI Reutilizable (GameGrid, CodeEditor, OutputConsole)
-├── data/         # Definición de Niveles y Misiones (JSON/TS)
-├── hooks/        # Lógica de Pyodide (usePyodide.ts - El cerebro)
-├── store/        # Estado Global (Zustand - useGameStore)
-└── assets/       # Imágenes y Sonidos
-```
+------------------------------------------------------------------------
 
----
+## 🧠 Engineering Decisions
+
+-   Arquitectura client-first para eliminar dependencia backend.
+-   WebAssembly para ejecutar Python real.
+-   Estado desacoplado mediante Zustand.
+-   Sistema modular orientado a extensibilidad.
+
+------------------------------------------------------------------------
 
 ## 👨‍💻 Autor
 
-Desarrollado con 🧡 y mucho café.
+**\[Tiago Frencia\] --- Full Stack Developer**
 
-[LinkedIn](#) | [Portfolio](#)
+*"Construyendo puentes entre educación y tecnología moderna."*
+
+------------------------------------------------------------------------
