@@ -32,13 +32,13 @@ function App() {
     addFadingWall,
     removeWall,
     collectEntity,
-    collectedItems,
+    // collectedItems,
     addPaintedCell,
-    addEntity,
-    clearPaintedCells,
+    // addEntity,
+    // clearPaintedCells,
     addCanvasObject,
     updateCanvasObject,
-    clearCanvasObjects,
+    // clearCanvasObjects,
     clearOutput
   } = useGameStore();
 
@@ -117,7 +117,7 @@ function App() {
             brushColorRef.current = color;
             // console.log(`SET COLOR: ${color}`);
           } else if (command.startsWith('SAY:')) {
-            const message = command.substring(4);
+            // const message = command.substring(4);
             // console.log(`[GAME] Hero says: ${message}`);
             // Future: Show speech bubble
           } else if (command.startsWith('COLLECT')) {
