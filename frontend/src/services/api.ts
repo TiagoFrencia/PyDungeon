@@ -1,3 +1,5 @@
+import { levels } from '../data/levels';
+
 export interface Level {
     id: number;
     name: string;
@@ -9,19 +11,14 @@ export interface Level {
 }
 
 export const getLevels = async (): Promise<Level[]> => {
-    const response = await fetch('/api/levels');
-    if (!response.ok) {
-        throw new Error('Failed to fetch levels');
-    }
-    return response.json();
+    // Return static data wrapped in a promise to maintain async interface
+    return Promise.resolve(levels);
 };
 
 export const jumpToLevel = async (levelId: number): Promise<Level> => {
-    const response = await fetch(`/api/game/jump/${levelId}`, {
-        method: 'POST',
-    });
-    if (!response.ok) {
-        throw new Error('Failed to jump to level');
+    const level = levels.find(l => l.id === levelId);
+    if (!level) {
+        throw new Error('Level not found');
     }
-    return response.json();
+    return Promise.resolve(level);
 };
